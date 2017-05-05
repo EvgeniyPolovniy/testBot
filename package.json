@@ -1,0 +1,23 @@
+{
+  "name": "testBot",
+  "version": "1.0.0",
+  "description": "Telegram bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvgeniyPolovniy/testBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EvgeniyPolovniy/testBot/issues"
+  },
+  "homepage": "https://github.com/EvgeniyPolovniy/testBot#readme",
+  "dependencies": {
+    "telegram-node-bot": "^4.0.5"
+  }
+}
