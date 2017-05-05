@@ -1,12 +1,14 @@
 # testBot
-##[t.me/testBKbot](t.me/testBKbot)
-#Node.js
+
+## [t.me/testBKbot](t.me/testBKbot) 
+
+# Node.js   
 
 npm i
 
 node index.js
 
-#Python
+# Python
 Telegram bot
 
 pip3 install pytelegrambotapi
