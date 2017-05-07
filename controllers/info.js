@@ -4,34 +4,34 @@ class InfoController extends Telegram.TelegramBaseController {
   /**
    * @param {Scope} $
    */
+  runMenu($) {
+    $.runMenu({
+      message: 'Выбери что-то:',
+      layout: [1, 2, 1],
+      'Пользователь': () => {
+        $.sendMessage(JSON.stringify($.message.from), {
+          reply_markup: JSON.stringify({
+            remove_keyboard: true
+          })
+        });
+      },
+      'test2': () => {
+        this.runMenu($)
+      },
+      'test3': () => {
+        this.runMenu($)
+      },
+      'Закрыть меню': () => {
+        $.sendMessage('Закрыл', {
+          reply_markup: JSON.stringify({
+            remove_keyboard: true
+          })
+        });
+      }
+    });
+  }
   infoHandler($) {
-    function runMenu($) {
-      $.runMenu({
-        message: 'Выбери что-то:',
-        layout: [1, 2, 1],
-        'Пользователь': () => {
-          $.sendMessage(JSON.stringify($.message.from), {
-            reply_markup: JSON.stringify({
-              remove_keyboard: true
-            })
-          });
-        },
-        'test2': () => {
-          runMenu($)
-        },
-        'test3': () => {
-          runMenu($)
-        },
-        'Закрыть меню': () => {
-          $.sendMessage('Закрыл', {
-            reply_markup: JSON.stringify({
-              remove_keyboard: true
-            })
-          });
-        }
-      });
-    }
-    runMenu($);
+    this.runMenu($);
     //$.runInlineMenu({
     //  layout: 2, //some layouting here
     //  method: 'sendMessage', //here you must pass the method name

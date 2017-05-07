@@ -19,5 +19,8 @@
   "homepage": "https://github.com/EvgeniyPolovniy/testBot#readme",
   "dependencies": {
     "telegram-node-bot": "^4.0.5"
+  },
+  "devDependencies": {
+    "pg": "^6.1.5"
   }
 }
