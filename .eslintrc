@@ -1,0 +1,18 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "func-names": ["error", "never"],
+    "prefer-arrow-callback": 0,
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
+    "no-param-reassign": 0,
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "class-methods-use-this": 0,
+    "no-loop-func": 0
+  }
+}

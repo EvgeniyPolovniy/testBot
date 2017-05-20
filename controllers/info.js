@@ -1,25 +1,91 @@
 const Telegram = require('telegram-node-bot');
+const RequestClient = require('reqclient').RequestClient;
+
+const client = new RequestClient({
+  baseUrl: 'http://localhost:3000/api/',
+  debugRequest: true,
+  debugResponse: true
+});
+
+const rem = {
+  reply_markup: JSON.stringify({
+    remove_keyboard: true
+  })
+};
 
 class InfoController extends Telegram.TelegramBaseController {
   /**
    * @param {Scope} $
    */
   runMenu($) {
+    const self = this;
+    const id = $.message.from.id;
     $.runMenu({
       message: 'Выбери что-то:',
-      layout: [1, 2, 1],
-      'Пользователь': () => {
-        $.sendMessage(JSON.stringify($.message.from), {
-          reply_markup: JSON.stringify({
-            remove_keyboard: true
-          })
+      layout: [1, 2, 2],
+      'Кто я?': () => {
+        client.get({ uri: 'user', query: { id } }).then(function (response) {
+          if (response.length > 0) {
+            $.sendMessage(`Зареган как "${response[0].firstName}"`);
+          } else {
+            $.sendMessage('Ты не зареган!');
+          }
+          self.runMenu($);
+        }).catch(function (err) {
+          $.sendMessage(`Ощибка в запросе! ${JSON.stringify(err)}`);
+          self.runMenu($);
         });
       },
-      'test2': () => {
-        this.runMenu($)
+      'Все пользователи': () => {
+        client.get('user').then(function (response) {
+          $.sendMessage(JSON.stringify(response));
+          self.runMenu($);
+        }).catch(function (err) {
+          $.sendMessage(`Ощибка в запросе! ${JSON.stringify(err)}`);
+          self.runMenu($);
+        });
       },
-      'test3': () => {
-        this.runMenu($)
+      'Зарегай меня!': () => {
+        client.get({ uri: 'user', query: { id } }, { fullResponse: true }).then(function (response) {
+          if (response.body.length === 2) {
+            client.put('user', {
+              id: $.message.from.id,
+              username: $.message.from.username,
+              firstName: $.message.from.firstName
+            }).then((res) => {
+              $.sendMessage(`Зарегал как "${res[0].firstName}"`);
+              self.runMenu($);
+            }).catch((err) => {
+              $.sendMessage(`Ощибка в запросе! ${JSON.stringify(err)}`);
+              self.runMenu($);
+            });
+          } else {
+            $.sendMessage('Ты уже зареган!');
+          }
+          self.runMenu($);
+        }).catch(function (err) {
+          $.sendMessage(`Ощибка в запросе! ${JSON.stringify(err)}`);
+          self.runMenu($);
+        });
+      },
+      'Удали меня!': () => {
+        client.get({ uri: 'user', query: { id } }).then(function (response) {
+          if (response.length > 0) {
+            client.delete({ uri: 'user/{id}', params: { id: response[0]._id } }).then(function (res) {
+              $.sendMessage('Удалил!');
+              self.runMenu($);
+            }).catch(function (err) {
+              $.sendMessage(`Ощибка в запросе! ${JSON.stringify(err)}`);
+              self.runMenu($);
+            });
+          } else {
+            $.sendMessage('Нет тебя!');
+            self.runMenu($);
+          }
+        }).catch(function (err) {
+          $.sendMessage(`Ощибка в запросе! ${JSON.stringify(err)}`);
+          self.runMenu($);
+        });
       },
       'Закрыть меню': () => {
         $.sendMessage('Закрыл', {
@@ -32,44 +98,12 @@ class InfoController extends Telegram.TelegramBaseController {
   }
   infoHandler($) {
     this.runMenu($);
-    //$.runInlineMenu({
-    //  layout: 2, //some layouting here
-    //  method: 'sendMessage', //here you must pass the method name
-    //  params: ['text'], //here you must pass the parameters for that method
-    //  menu: [
-    //    {
-    //      text: '1', //text of the button
-    //      callback: (callbackQuery, message) => { //to your callback will be passed callbackQuery and response from method
-    //        console.log(1)
-    //      }
-    //    },
-    //    {
-    //      text: 'Exit',
-    //      message: 'Are you sure?',
-    //      layout: 2,
-    //      menu: [ //Sub menu (current message will be edited)
-    //        {
-    //          text: 'Yes!',
-    //          callback: () => {
-    //
-    //          }
-    //        },
-    //        {
-    //          text: 'No!',
-    //          callback: () => {
-    //
-    //          }
-    //        }
-    //      ]
-    //    }
-    //  ]
-    //})
   }
 
   get routes() {
     return {
-      'infoCommand': 'infoHandler'
-    }
+      infoCommand: 'infoHandler'
+    };
   }
 }
 

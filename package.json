@@ -2,9 +2,11 @@
   "name": "testBot",
   "version": "1.0.0",
   "description": "Telegram bot",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db": "mongod",
+    "bot": "nodemon index.js",
+    "api": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +20,16 @@
   },
   "homepage": "https://github.com/EvgeniyPolovniy/testBot#readme",
   "dependencies": {
-    "telegram-node-bot": "^4.0.5"
-  },
-  "devDependencies": {
-    "pg": "^6.1.5"
+    "telegram-node-bot": "^4.0.5",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mongoose": "^4.10.0",
+    "node-restful": "^0.2.6",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "reqclient": "^2.3.0"
   }
 }
