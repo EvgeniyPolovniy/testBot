@@ -1,4 +1,5 @@
 const Telegram = require('telegram-node-bot');
+const mainMenu = require('../methods/mainMenu');
 
 class HiController extends Telegram.TelegramBaseController {
   /**
@@ -6,7 +7,9 @@ class HiController extends Telegram.TelegramBaseController {
    */
   hiHandler($) {
     $.sendPhoto({ path: `${__dirname}/../img/cat.jpg`}).then(() => {
-      $.sendMessage('Привет!');
+      $.sendMessage('Привет!').then(
+        mainMenu($)
+      );
     });
   }
 

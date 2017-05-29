@@ -5,7 +5,7 @@ class OtherCommandController extends Telegram.TelegramBaseController {
    * @param {Scope} $
    */
   handle($) {
-    $.sendMessage('Я не понимаю :(');
+    $.sendMessage('Такой команды нет...');
   }
 }
 

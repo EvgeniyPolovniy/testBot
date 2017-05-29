@@ -8,11 +8,20 @@ const User = require('../models/user');
 const Hero = require('../models/hero');
 
 // Routes
-User.methods(['get', 'put', 'post', 'delete']);
-User.register(router, '/user');
+// User routes
+router.post('/user', function (req, res, next) {
+  User.create(req.body).then(function (user) {
+    res.send(user);
+  }).catch(next);
+});
 
-Hero.methods(['get', 'put', 'post', 'delete']);
-Hero.register(router, '/hero');
+router.get('/user/:id', function (req, res, next) {
+  User.findOne({id: req.params.id}).then(function (user) {
+    res.send(user);
+  });
+});
+
+// Hero routes
 
 // Return router
 module.exports = router;
